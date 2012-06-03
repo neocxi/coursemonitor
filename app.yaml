@@ -1,0 +1,19 @@
+application: slotchecker
+version: 2alpha
+runtime: python27
+api_version: 1
+threadsafe: true
+
+libraries:
+- name: jinja2
+  version: latest
+
+handlers:
+- url: /stylesheets
+  static_dir: stylesheets
+- url: /task/monitor
+  script: backend.app
+  login: admin
+
+- url: /.*
+  script: monitor.app
