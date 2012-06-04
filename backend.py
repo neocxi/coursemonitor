@@ -12,12 +12,12 @@ def monitor(*args, **kwargs):
 		try:
 			content = content_fetch(course.ccn)
 			status, availability = aval_fetch(course.monitor_type, content)
-			if availability is not course.availability:
+			if availability != course.availability:
 				course.availability = availability
 				course.status = status
 				course.put()
 				inform_user(course.user, course)
-			elif status is not course.status:
+			elif status != course.status:
 				course.status = status
 				course.put()
 		except:

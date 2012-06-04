@@ -19,18 +19,19 @@ def name_fetch(content = None):
 
 def aval_fetch(monitor_type = None, content = None):
 	if monitor_type and content:
-		if type is '1':
+		if monitor_type == '1':
 			enroll = re.findall(enrolled_regex, content)[0]
-			aval = enroll[0] is not enroll[1]
+			aval = enroll[0] != enroll[1]
 			status = "Available!" if aval else "Currently full."
 			status+= "Enrolled %s out of a limit of %s" % enroll
-		elif monitor_type is '2':
+		elif monitor_type == '2':
 			enroll = re.findall(wl_regex, content)[0]
-			aval = enroll[0] is not enroll[1]
+			aval = enroll[0] != enroll[1]
 			status = "Available!" if aval else "Currently full."
 			status+= "Waitlisted %s out of a limit of %s" % enroll
-		# else:
-			# other cases TODO
+		else:
+			aval = False
+			status = 'stub'
 		return status, aval
 
 def inform_user(user, course):

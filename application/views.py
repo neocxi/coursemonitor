@@ -45,14 +45,14 @@ def list_courses():
     if form.validate_on_submit():
         
         course = MonitoredCourse(
-            ccn = int(form.ccn.data),
+            ccn = form.ccn.data,
             user = users.get_current_user(),
             monitor_type = form.monitor_type.data
             
         )
         try:
             content = content_fetch(form.ccn.data)
-            name = name_fetch(content)
+            course.name = name_fetch(content)
             course.status, course.availability = aval_fetch(course.monitor_type, content)
             course.put()
             flash(u'Course %s successfully saved.' % course.name, 'success')
@@ -66,8 +66,7 @@ def list_courses():
 
 @login_required
 def delete_course(ccn):
-    """Delete an example object"""
-    course = MonitoredCourse.all().filter('user =', users.get_current_user).filter('ccn =', ccn)
+    course = MonitoredCourse.all().filter('user =', users.get_current_user()).filter('ccn =', str(ccn)).fetch(1)[0]
     try:
         course.delete()
         flash(u'Course %s successfully deleted.' % ccn, 'success')
@@ -78,7 +77,8 @@ def delete_course(ccn):
 
 @login_required
 def account_setting():
-    return render_template('setting.html', form = SettingForm(), logged_in = True, logout_url = users.create_logout_url('/'))
+    return 'not functional yet'
+    # return render_template('setting.html', form = SettingForm(), logged_in = True, logout_url = users.create_logout_url('/'))
 
 @admin_required
 def admin_only():

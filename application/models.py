@@ -18,7 +18,7 @@ class ExampleModel(db.Model):
 
 class MonitoredCourse(db.Model):
     user = db.UserProperty(required=True)
-    ccn = db.IntegerProperty(required=True)
+    ccn = db.StringProperty(required=True)
     name = db.StringProperty()
     status = db.StringProperty()
     availability = db.BooleanProperty()
