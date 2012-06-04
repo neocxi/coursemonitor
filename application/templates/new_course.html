@@ -1,0 +1,47 @@
+<div class="modal fade" id="new-course-modal">
+    <div class="modal-header">
+        <button class="close" data-dismiss="modal">×</button>
+        <h3>Add a New Course</h3>
+    </div>
+    <div class="modal-body">
+        <form id="new-course-form" class="well form-horizontal"
+            action="{{ url_for('list_courses') }}" method="post" accept-charset="utf-8">
+            <fieldset>
+                {{ form.hidden_tag() }}
+                <div class="control-group">
+                    <div class="control-label">{{ form.ccn.label }}</div>
+                    <div class="controls">
+                        {{ form.ccn|safe }}
+                        {% if form.ccn.errors %}
+                        <ul class="errors">
+                            {% for error in form.ccn.errors %}
+                            <li>{{ error }}</li>
+                            {% endfor %}
+                        </ul>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="control-group">
+                    <div class="control-label">{{ form.monitor_type.label }}</div>
+                    <div class="controls">
+                        {{ form.monitor_type|safe }}
+                        {% if form.monitor_type.errors %}
+                        <ul class="errors">
+                            {% for error in form.monitor_type.errors %}
+                            <li>{{ error }}</li>
+                            {% endfor %}
+                        </ul>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="control-group">
+                    <div class="controls">
+                        <input class="btn btn-primary" type="submit" value="Add Course"/>
+                        <button class="btn" data-dismiss="modal">Cancel</button>
+                    </div>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+</div>
+

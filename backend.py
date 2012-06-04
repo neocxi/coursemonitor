@@ -3,28 +3,27 @@ import re
 from google.appengine.api import mail
 from google.appengine.api import urlfetch
 
-from monitor import MonitoredCourses
+from application.models import MonitoredCourse
+from application.helper import content_fetch, aval_fetch, inform_user
 
 
-def app(*args, **kwargs):
-	regex_enrolled = re.compile("<blockquote>(\d+)\&nbsp\;student\(s\) \D+(\d+)")
-	regex_wl = re.compile("(\d+)\D*?waiting list\D+(\d+)")
-	for course in MonitoredCourses.all():
-		url = "http://infobears.berkeley.edu:3400/osc/?_InField1=RESTRIC&_InField2=%s&_InField3=12D2" % course.ccn
-		result = urlfetch.fetch(url).content
-
+def monitor(*args, **kwargs):
+	for course in MonitoredCourse.all().fetch(None):
 		try:
-			enroll = re.findall(regex_enrolled, result)[0]
-			wl = re.findall(regex_wl, result)[0]
-
-			# tentative strategy
-			if enroll[0] is not enroll[1]:
-				# inform certain user
-				mail.send_mail(sender="adslcx@gmail.com",
-								to=course.user.email(),
-								subject="Course availbility",
-								body=result)
+			content = content_fetch(course.ccn)
+			status, availability = aval_fetch(course.monitor_type, content)
+			if availability is not course.availability:
+				course.availability = availability
+				course.status = status
+				course.put()
+				inform_user(course.user, course)
+			elif status is not course.status:
+				course.status = status
+				course.put()
 		except:
 			pass
+
+
+
 
 	return ['Done']

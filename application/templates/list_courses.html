@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% block style_block %}
+    <style type="text/css">
+        table.table { width: 60%; }
+    </style>
+{% endblock %}
+
+{% block content %}
+
+    <h1 id="">All Courses Monitored</h1>
+    <div>&nbsp;</div>
+    <table class="table table-bordered table-striped">
+        <thead>
+            <tr>
+                <th>CCN</th>
+                <th>Name</th>
+                <th>Status</th>
+                <th>Added by</th>
+                <th>Added on</th>
+                <th>&nbsp;</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for course in courses %}
+            <tr>
+                <td>{{ course.ccn }}</td>
+                <td>{{ course.name }}</td>
+                <td>{{ course.status }}</td>
+                <td>{{ course.user.email() }}</td>
+                <td>{{ course.date }}</td>
+                <td>
+                    <form method="post" action="{{ url_for('delete_course', ccn=course_ccn) }}">
+                        <button class="btn">Delete</button>
+                    </form>
+                </td>
+            </tr>
+            {% else %}
+            <tr><td colspan="6">No courses yet</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <p>
+        <a class="btn btn-primary" data-toggle="modal" data-target="#new-course-modal">
+            <i class="icon-plus-sign icon-white"></i>
+            New course
+        </a>
+    </p>
+{% include 'new_course.html' %} {# pull in new_course form (modal dialog) #}
+{% endblock content %}
+
+
