@@ -1,10 +1,7 @@
-import urllib2
-import re
-from google.appengine.api import mail
-from google.appengine.api import urlfetch
 
 from application.models import MonitoredCourse
 from application.helper import content_fetch, aval_fetch, inform_user
+import logging
 
 
 def monitor(*args, **kwargs):
@@ -12,6 +9,7 @@ def monitor(*args, **kwargs):
 		try:
 			content = content_fetch(course.ccn)
 			status, availability = aval_fetch(course.monitor_type, content)
+			logging.info(status)
 			if availability != course.availability:
 				course.availability = availability
 				course.status = status
@@ -20,10 +18,10 @@ def monitor(*args, **kwargs):
 			elif status != course.status:
 				course.status = status
 				course.put()
-		except:
-			pass
+		except Exception, e:
+			return str(e)
 
 
 
 
-	return ['Done']
+	return 'done'

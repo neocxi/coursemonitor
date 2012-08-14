@@ -32,7 +32,7 @@ app.add_url_rule('/admin_only', 'admin_only', view_func=views.admin_only)
 app.add_url_rule('/courses/delete/<int:ccn>', 'delete_course', view_func=views.delete_course, methods=['POST'])
 
 #setting (put and get)
-app.add_url_rule('/courses/setting', 'setting', view_func=views.account_setting, methods=['GET', 'PUT'] )
+app.add_url_rule('/courses/setting', 'setting', view_func=views.account_setting, methods=['GET', 'PUT','POST'] )
 
 ## Error handlers
 # Handle 404 errors

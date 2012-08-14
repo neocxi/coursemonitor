@@ -57,8 +57,8 @@ def list_courses():
             course.put()
             flash(u'Course %s successfully saved.' % course.name, 'success')
             return redirect('/')
-        except:
-            flash(u'Something wrong, check CCN.', 'info')
+        except Exception, e:
+            flash(u'Something wrong, check CCN or %s' % str(e), 'info')
             return redirect('/')
 
     return render_template('list_courses.html', courses=monitored_courses, form=form, logged_in = True, logout_url = users.create_logout_url('/'))
@@ -77,8 +77,24 @@ def delete_course(ccn):
 
 @login_required
 def account_setting():
-    return 'not functional yet'
-    # return render_template('setting.html', form = SettingForm(), logged_in = True, logout_url = users.create_logout_url('/'))
+    form = SettingForm()
+    user_setting_set = UserSetting.all().filter('user =', users.get_current_user() ).fetch(1)
+    if form.validate_on_submit():
+        if len(user_setting_set) != 0:
+            user_setting = user_setting_set[0]
+            user_setting.cell_mail = form.cell.data + form.provider.data
+        else:
+            user_setting = UserSetting( user = users.get_current_user(),
+                                cell_mail = form.cell.data + form.provider.data)
+        # try
+        user_setting.put()
+        flash(u'Change saved', 'success')
+        return redirect(url_for('list_courses'))
+    if len(user_setting_set) != 0:
+        form.cell.data, form.provider.data = extract_cell(user_setting_set[0].cell_mail)
+    return render_template('setting.html', form = form, logged_in = True, logout_url = users.create_logout_url('/'))
+
+
 
 @admin_required
 def admin_only():

@@ -1,4 +1,4 @@
 cron:
 - description: check enrollment change
   url: /task/monitor
-  schedule: every 5 minutes
+  schedule: every 2 minutes

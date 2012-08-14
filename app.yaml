@@ -1,5 +1,5 @@
 application: slotchecker
-version: 3alpha
+version: 4beta
 runtime: python27
 api_version: 1
 threadsafe: true

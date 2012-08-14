@@ -8,12 +8,12 @@
 
 {% block content %}
 
-
-<form id="setting" class="well form-horizontal" action="{{ url_for('setting') }}" method="put" accept-charset="utf-8">
-	<fieldset>
-		{{ form.hidden_tag() }}
-	<div class="control-group">
+<form id="setting" class="well form-horizontal con" action="{{ url_for('setting') }}" method="POST" accept-charset="utf-8">
+    <fieldset>
+        {{ form.hidden_tag() }}
+    <div class="control-group">
                     <div class="control-label">{{ form.cell.label }}</div>
+                    
                     <div class="controls">
                         {{ form.cell|safe }}
                         {% if form.cell.errors %}
@@ -38,7 +38,7 @@
                         {% endif %}
                     </div>
                 </div>
-	</fieldset>
-	<input class="btn btn-primary" type="submit" value="Save setting"/>
+    </fieldset>
+    <input class="btn btn-primary" type="submit" value="Save setting"/>
 
 {% endblock content%}
